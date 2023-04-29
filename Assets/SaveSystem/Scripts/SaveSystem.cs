@@ -79,6 +79,13 @@ public class SaveSystem : MonoBehaviour
     public void Load(SaveStore store)
     {
         var saveData = CollectSaveData(store, out var saveSerializer);
+
+        if (saveData == null)
+        {
+            Debug.LogError($"Save store with key [{store.Key}] do not contains valid save data.");
+            return;
+        }
+        
         ApplySaveData(saveData, saveSerializer);
     }
 

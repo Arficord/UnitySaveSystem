@@ -57,6 +57,13 @@ public class DiscSaveStore : SaveStore
         }
         
         var fullPath = $"{directoryPath}/{fileName}.{fileType}";
+
+        if (!File.Exists(fullPath))
+        {
+            Debug.LogError($"Tried to read data from not existing file.");
+            return "";
+        }
+        
         return File.ReadAllText(fullPath);
     }
     
