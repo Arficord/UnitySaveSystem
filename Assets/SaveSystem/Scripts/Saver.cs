@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Arficord.SavingSystem.Serializers;
 using UnityEngine;
 
-public abstract class Saver : MonoBehaviour
+namespace Arficord.SavingSystem.Savers
 {
-    [SerializeField] private string key;
-
-    public string Key
+    public abstract class Saver : MonoBehaviour
     {
-        get => key;
-        set => key = value;
-    }
+        [SerializeField] private string key;
 
-    public abstract string RecordData(SaveSerializer serializer);
-    public abstract void ApplyData(SaveSerializer serializer, string serializedString);
+        public string Key
+        {
+            get => key;
+            set => key = value;
+        }
+
+        public abstract string RecordData(SaveSerializer serializer);
+        public abstract void ApplyData(SaveSerializer serializer, string serializedString);
+    }
 }

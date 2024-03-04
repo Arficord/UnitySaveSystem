@@ -1,47 +1,52 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Arficord.SavingSystem.Savers;
+using Arficord.SavingSystem.Serializers;
 using UnityEngine;
 
-public class CharacterSaver : Saver
+namespace Arficord.SavingSystem.Demo.Savers
 {
-    [Serializable]
-    private class SaveData
+    public class CharacterSaver : Saver
     {
-        public Vector3Data position;
-        public QuaternionData rotation;
-        public Vector3Data velocity;
-        public Vector3Data angularVelocity;
-    }
-    
-    [SerializeField] private Transform characterTransform;
-    [SerializeField] private Rigidbody characterRigidbody;
-    
-    public override string RecordData(SaveSerializer serializer)
-    {
-        var saveData = new SaveData()
+        [Serializable]
+        private class SaveData
         {
-            position = new Vector3Data(characterTransform.position),
-            rotation = new QuaternionData(characterTransform.rotation),
-            velocity = new Vector3Data(characterRigidbody.velocity),
-            angularVelocity = new Vector3Data(characterRigidbody.angularVelocity)
-        };
-
-        return serializer.Serialize(saveData);
-    }
-
-    public override void ApplyData(SaveSerializer serializer, string serializedString)
-    {
-        var saveData = serializer.Deserialize<SaveData>(serializedString);
-
-        if (saveData == null)
-        {
-            Debug.LogError($"Character Saver received null object after deserialize, base serialized string is {serializedString}", this);
-            return;
+            public Vector3 position;
+            public Quaternion rotation;
+            public Vector3 velocity;
+            public Vector3 angularVelocity;
         }
-        
-        characterTransform.SetPositionAndRotation(saveData.position.GetVector3(), saveData.rotation.GetQuaternion());
-        characterRigidbody.velocity = saveData.velocity.GetVector3();
-        characterRigidbody.angularVelocity = saveData.angularVelocity.GetVector3();
+
+        [SerializeField] private Transform characterTransform;
+        [SerializeField] private Rigidbody characterRigidbody;
+
+        public override string RecordData(SaveSerializer serializer)
+        {
+            var saveData = new SaveData()
+            {
+                position = characterTransform.position,
+                rotation = characterTransform.rotation,
+                velocity = characterRigidbody.velocity,
+                angularVelocity = characterRigidbody.angularVelocity,
+            };
+
+            return serializer.Serialize(saveData);
+        }
+
+        public override void ApplyData(SaveSerializer serializer, string serializedString)
+        {
+            if (!serializer.TryDeserialize(out SaveData saveData, serializedString))
+            {
+                Debug.LogError(
+                    $"Character Saver received null object after deserialize, base serialized string is {serializedString}",
+                    this);
+                return;
+            }
+
+            characterTransform.SetPositionAndRotation(saveData.position, saveData.rotation);
+            characterRigidbody.velocity = saveData.velocity;
+            characterRigidbody.angularVelocity = saveData.angularVelocity;
+        }
     }
 }

@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SaveStore : ScriptableObject
+namespace Arficord.SavingSystem.Stores
 {
-    [SerializeField] private string key;
+    public abstract class SaveStore : ScriptableObject
+    {
+        [SerializeField] private string key;
 
-    public string Key => key;
-    
-    public abstract void StoreSaveString(string saveString);
-    public abstract string GetSaveString();
+        public string Key => key;
+
+        public abstract void StoreSaveString(string saveString);
+        public abstract string GetSaveString();
+        public abstract void DeleteSave();
+    }
 }

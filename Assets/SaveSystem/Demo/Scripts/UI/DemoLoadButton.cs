@@ -1,32 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using Arficord.SavingSystem.Stores;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button))]
-public class DemoLoadButton : MonoBehaviour
+namespace Arficord.SavingSystem.Demo.UI
 {
-    [SerializeField] private SaveSystem saveSystem;
-    [SerializeField] private SaveStore saveStore;
-    
-    private Button _button;
-    
-    private void Awake()
+    [RequireComponent(typeof(Button))]
+    public class DemoLoadButton : MonoBehaviour
     {
-        _button = GetComponent<Button>();
-        _button.onClick.AddListener(OnButtonClick);
-    }
+        [SerializeField] private SaveSystem saveSystem;
+        [SerializeField] private SaveStore saveStore;
 
-    private void OnButtonClick()
-    { 
-        saveSystem.Load(saveStore);
-    }
+        private Button _button;
 
-    private void OnDestroy()
-    {
-        if (_button != null)
+        private void Awake()
         {
-            _button.onClick.RemoveListener(OnButtonClick);   
+            _button = GetComponent<Button>();
+            _button.onClick.AddListener(OnButtonClick);
+        }
+
+        private void OnButtonClick()
+        {
+            saveSystem.Load(saveStore);
+        }
+
+        private void OnDestroy()
+        {
+            if (_button != null)
+            {
+                _button.onClick.RemoveListener(OnButtonClick);
+            }
         }
     }
 }

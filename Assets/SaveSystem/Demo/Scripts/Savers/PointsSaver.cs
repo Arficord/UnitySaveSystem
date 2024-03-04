@@ -1,30 +1,41 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Arficord.SavingSystem.Demo.Controllers;
+using Arficord.SavingSystem.Savers;
+using Arficord.SavingSystem.Serializers;
 using UnityEngine;
 
-public class PointsSaver : Saver
+namespace Arficord.SavingSystem.Demo.Savers
 {
-    [Serializable]
-    private class PointsData
+    public class PointsSaver : Saver
     {
-        public float Points;
-    }
-
-    [SerializeField] PointsController pointsController;
-        
-    public override string RecordData(SaveSerializer serializer)
-    {
-        var data = new PointsData()
+        [Serializable]
+        private class PointsData
         {
-            Points = pointsController.Points,
-        };
-        return serializer.Serialize(data);
-    }
+            public float Points;
+        }
 
-    public override void ApplyData(SaveSerializer serializer, string serializedString)
-    {
-        var data = serializer.Deserialize<PointsData>(serializedString);
-        pointsController.Points = data.Points;
+        [SerializeField] PointsController pointsController;
+
+        public override string RecordData(SaveSerializer serializer)
+        {
+            var data = new PointsData()
+            {
+                Points = pointsController.Points,
+            };
+            return serializer.Serialize(data);
+        }
+
+        public override void ApplyData(SaveSerializer serializer, string serializedString)
+        {
+            if (!serializer.TryDeserialize(out PointsData data, serializedString))
+            {
+                Debug.LogError("Deserialization failed", this);
+                return;
+            }
+
+            pointsController.Points = data.Points;
+        }
     }
 }

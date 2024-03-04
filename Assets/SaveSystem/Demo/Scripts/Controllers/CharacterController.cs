@@ -3,19 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+namespace Arficord.SavingSystem.Demo.Controllers
 {
-    [SerializeField] private Rigidbody rigidbody;
-    [SerializeField][Range(1, 20)] private float speed;
-
-    private void Update()
+    public class CharacterController : MonoBehaviour
     {
-        var x = Input.GetAxis("Horizontal");
-        var y = Input.GetAxis("Vertical");
+        [SerializeField] private Rigidbody rigidbody;
+        [SerializeField] [Range(1, 20)] private float speed;
 
-        x *= speed;
-        y *= speed;
-        
-        rigidbody.velocity = new Vector3(x, y, 0);
+        private void Update()
+        {
+            var x = Input.GetAxis("Horizontal");
+            var y = Input.GetAxis("Vertical");
+
+            x *= speed;
+            y *= speed;
+
+            rigidbody.velocity = new Vector3(x, y, 0);
+        }
     }
 }

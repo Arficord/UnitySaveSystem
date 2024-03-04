@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Arficord.SavingSystem.Serializers;
 using Arficord.SavingSystem.Stores;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,11 +5,11 @@ using UnityEngine.UI;
 namespace Arficord.SavingSystem.Demo.UI
 {
     [RequireComponent(typeof(Button))]
-    public class DemoSaveButton : MonoBehaviour
+    public class DemoDeleteButton : MonoBehaviour
     {
         [SerializeField] private SaveSystem saveSystem;
-        [SerializeField] private SaveSerializer saveSerializer;
         [SerializeField] private SaveStore saveStore;
+
         private Button _button;
 
         private void Awake()
@@ -24,7 +20,7 @@ namespace Arficord.SavingSystem.Demo.UI
 
         private void OnButtonClick()
         {
-            saveSystem.Save(saveSerializer, saveStore);
+            saveSystem.Delete(saveStore);
         }
 
         private void OnDestroy()

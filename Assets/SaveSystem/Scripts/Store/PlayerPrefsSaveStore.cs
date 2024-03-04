@@ -2,18 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerPrefsSaveStore", menuName = "SaveSystem/Stores/PlayerPrefsSaveStore", order = 2)]
-public class PlayerPrefsSaveStore : SaveStore
+namespace Arficord.SavingSystem.Stores
 {
-    [SerializeField] private string playerPrefsKey = "save";
-    public override void StoreSaveString(string saveString)
+    [CreateAssetMenu(fileName = "PlayerPrefsSaveStore", menuName = "SaveSystem/Stores/PlayerPrefsSaveStore", order = 2)]
+    public class PlayerPrefsSaveStore : SaveStore
     {
-        PlayerPrefs.SetString(playerPrefsKey, saveString);
-    }
+        [SerializeField] private string playerPrefsKey = "save";
 
-    public override string GetSaveString()
-    {
-        //if not present return default value
-        return PlayerPrefs.GetString(playerPrefsKey);
+        public override void StoreSaveString(string saveString)
+        {
+            PlayerPrefs.SetString(playerPrefsKey, saveString);
+        }
+
+        public override string GetSaveString()
+        {
+            //if not present return default value
+            return PlayerPrefs.GetString(playerPrefsKey);
+        }
+        
+        public override void DeleteSave()
+        {
+            if (!PlayerPrefs.HasKey(playerPrefsKey))
+            {
+                return;
+            }
+            
+            PlayerPrefs.DeleteKey(playerPrefsKey);
+            Debug.Log("PlayerPrefsStore: Saves deleted");
+        }
     }
 }

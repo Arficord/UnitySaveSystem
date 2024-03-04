@@ -4,21 +4,24 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class PointsController : MonoBehaviour
+namespace Arficord.SavingSystem.Demo.Controllers
 {
-    [SerializeField] private TextMeshPro text;
-    
-    public float Points
+    public class PointsController : MonoBehaviour
     {
-        get => _points;
-        set => _points = value;
-    }
-    
-    private float _points = 0;
+        [SerializeField] private TextMeshPro text;
 
-    private void Update()
-    {
-        _points += Time.deltaTime;
-        text.text = $"Points: {_points.ToString("F0")}";
+        public float Points
+        {
+            get => _points;
+            set => _points = value;
+        }
+
+        private float _points = 0;
+
+        private void Update()
+        {
+            _points += Time.deltaTime;
+            text.text = $"Points: {_points.ToString("F0")}";
+        }
     }
 }
